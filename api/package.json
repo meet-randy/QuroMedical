@@ -7,7 +7,7 @@
   "author": "rendani",
   "license": "MIT",
   "scripts": {
-    "build": "tsc && node dist/index"
+    "build": "tsc && node dist/src/index"
   },
   "dependencies": {
     "express": "^4.18.2",

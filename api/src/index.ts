@@ -1,6 +1,7 @@
 import express, { Application } from 'express';
 import bodyParser from 'body-parser';
 import { setupSwagger } from '../swagger';
+import healthChecks from './routes/healthcheck';
 import shortenRoutes from './routes/shorten';
 import unshortenRoutes from './routes/unshorten';
 import morgan from 'morgan';
@@ -21,7 +22,7 @@ app.get("/ping", async (_req, res) => {
   });
 app.use('/api/shorten', shortenRoutes);
 app.use('/api/unshorten', unshortenRoutes);
-
+app.use('/api/health', healthChecks)
 // Setup Swagger
 setupSwagger(app);
 
