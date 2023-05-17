@@ -16,7 +16,7 @@ export class ShortenRepository {
   
   public async createShortUrl(long_url: string): Promise<string> {
     const shortId = shortid.generate(); // Generate a unique short ID
-    const shortUrl = `http://localhost:3000/${shortId}`;
+    const shortUrl = `https://api.meetrandy.co.za/${shortId}`;
     // Save the shortUrl and longUrl in the database using the pool connection
     try {
       await this.pool.query('INSERT INTO urls (short_id, long_url) VALUES ($1, $2) RETURNING *', [shortId, long_url]);

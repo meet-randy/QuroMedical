@@ -36,7 +36,7 @@ const unshortenController = new UnshortenController();
  *                 longUrl:
  *                   type: string
  *                   description: The unshortened URL.
- *                   example: https://example.com/long-url
+ *                   example: https://api.meetrandy.co.za/long-url
  */
 router.get('/:shortUrl', (req: Request, res: Response) => {
   unshortenController.unshortenUrl(req, res);
