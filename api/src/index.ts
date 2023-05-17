@@ -5,7 +5,6 @@ import healthChecks from './routes/healthcheck';
 import shortenRoutes from './routes/shorten';
 import unshortenRoutes from './routes/unshorten';
 import morgan from 'morgan';
-import { Pool } from 'pg';
 
 const app: Application = express();
 const port = 3000;

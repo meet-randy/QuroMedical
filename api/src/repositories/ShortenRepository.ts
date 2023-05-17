@@ -7,7 +7,7 @@ export class ShortenRepository {
   constructor() {
     // Initialize the Postgres database connection
     this.pool = new Pool({
-        connectionString: 'postgresql://localhost/url_shortener'
+        connectionString: 'postgresql://url_shortener_h433_user:SCFFmiZdtD0wbMqbafyPAC94BbhooX7t@dpg-chie1bl269vf5qdpvb60-a.frankfurt-postgres.render.com/url_shortener_h433'
       });
   }
   
