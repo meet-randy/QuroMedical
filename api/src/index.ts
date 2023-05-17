@@ -14,9 +14,9 @@ app.use(bodyParser.json());
 app.use(morgan("tiny"));
 
 // Routes
-app.get("/ping", async (_req, res) => {
+app.get("/", async (_req, res) => {
     res.send({
-      message: "pong",
+      message: "Hello!!!",
     });
   });
 app.use('/api/shorten', shortenRoutes);
