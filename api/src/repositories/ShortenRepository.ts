@@ -7,7 +7,10 @@ export class ShortenRepository {
   constructor() {
     // Initialize the Postgres database connection
     this.pool = new Pool({
-        connectionString: 'postgresql://url_shortener_h433_user:SCFFmiZdtD0wbMqbafyPAC94BbhooX7t@dpg-chie1bl269vf5qdpvb60-a.frankfurt-postgres.render.com/url_shortener_h433'
+        connectionString: 'postgresql://url_shortener_h433_user:SCFFmiZdtD0wbMqbafyPAC94BbhooX7t@dpg-chie1bl269vf5qdpvb60-a.frankfurt-postgres.render.com/url_shortener_h433',
+        ssl: {
+          rejectUnauthorized: false, // Set to `true` if your SSL/TLS certificate is trusted
+        },
       });
   }
   
@@ -15,7 +18,13 @@ export class ShortenRepository {
     const shortId = shortid.generate(); // Generate a unique short ID
     const shortUrl = `http://localhost:3000/${shortId}`;
     // Save the shortUrl and longUrl in the database using the pool connection
-    const result = await this.pool.query('INSERT INTO urls (short_id, long_url) VALUES ($1, $2) RETURNING *', [shortId, long_url]);
+    try {
+      await this.pool.query('INSERT INTO urls (short_id, long_url) VALUES ($1, $2) RETURNING *', [shortId, long_url]);
+      // Handle the result as needed
+    } catch (error) {
+      console.error('Error executing query:', error);
+      throw error; // Rethrow the error or handle it according to your application's error handling strategy
+    }
     return shortUrl;
   }
 }

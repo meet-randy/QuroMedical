@@ -19,12 +19,12 @@ const unshortenController = new UnshortenController();
  *     parameters:
  *       - name: shortUrl
  *         in: path
- *         description: The short URL to be unshortened.
+ *         description: The short ID to be unshortened.
  *         required: true
  *         schema:
  *           type: string
  *           format: uri
- *           example: http://your-domain.com/abc123
+ *           example: abc123
  *     responses:
  *       200:
  *         description: Successfully unshortened URL
