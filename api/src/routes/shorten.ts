@@ -38,7 +38,7 @@ const shortenController = new ShortenController();
  *                 shortUrl:
  *                   type: string
  *                   description: The shortened URL.
- *                   example: http://your-domain.com/abc123
+ *                   example: http://api.meetrandy.co.za/abc123
  */
 router.post('/', (req: Request, res: Response) => {
   shortenController.shortenUrl(req, res);
