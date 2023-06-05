@@ -6,12 +6,20 @@ import { Poppins_400Regular, Poppins_700Bold, Poppins_300Light } from '@expo-goo
 import * as Font from 'expo-font'
 import Loader from "./components/AppLoader/Loader";
 import api from "./helpers/apiHelper";
+import { Provider, useDispatch, useSelector } from "react-redux";
+import { selectRecentUrls, setRecentUrls } from "./slices/appSlice";
+import { PersistGate } from "redux-persist/integration/react";
+import { persistor, store } from "./store";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState<Boolean>(false)
   const [list, setList] = useState<{name: string}[]>([])
   const [visible, setVisibility] = useState<Boolean>(false)
   const [url, setUrl] = useState<{url: string}>()
+  const dispatch = useDispatch();
+
+  const newList = useSelector(selectRecentUrls);
 
   const loadFonts = useCallback(async () => {
     try {
@@ -43,6 +51,7 @@ export default function App() {
       }
       const response = await api.post('/shorten', data)
       setList((prev) => [...prev, {name: response.data.shortUrl}])
+      dispatch(setRecentUrls(response.data.shortUrl))
       if(list.length > 0){
         setVisibility(true)
       }
@@ -63,6 +72,9 @@ export default function App() {
       'Notice',
       'By accepting you will be redirected to the following address \n'+ `${long_url.data.longUrl}`,
       [
+        {
+          text: 'Maybe Later',
+        },
         {
           text: 'OK',
           onPress: () => redirectToUrl(item),
@@ -104,50 +116,53 @@ export default function App() {
     )
   }else{
     return (
-      <Background>
-        <SafeAreaView>
-        <View style={styles.container}>
+    
+          <SafeAreaProvider>
+          <Background>
+            <SafeAreaView>
+            <View style={styles.container}>
 
-          <Image source={require('../app/assets/icon.png')} style={{width: 100, height: 100, marginVertical: 20}} />
+              <Image source={require('../app/assets/icon.png')} style={{width: 100, height: 100, marginVertical: 20}} />
 
-          <TextInput 
-            placeholder="enter long url..."
-            style={styles.input}
-            value={url?.url}
-            onChangeText={(text) => handleInput(text)}
-            autoCapitalize="none"
-          />
-          <View style={{backgroundColor: "#fff", width: "40%", marginVertical: 20, borderRadius: 20}}>
-            <Button title="GO..." onPress={() => handleSubmit()}/>
-          </View>
-          {/* {visible?  */}
-          <FlatList
-            data={list}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                onPress={() => showAlert(item.name)}  
-              >
-                 <Text style={styles.textStyle}>{item.name}</Text>
-              </TouchableOpacity>
-             
-            )}
-            
-            style={{width: 300, marginVertical: 20}}
-            //extraData={appIsReady}
-          />
-          {/* :
-          <></> */}
-            {/* } */}
-          <StatusBar style="auto" />
-        </View>
-        </SafeAreaView>
-      </Background>
+              <TextInput 
+                placeholder="enter long url..."
+                style={styles.input}
+                value={url?.url}
+                onChangeText={(text) => handleInput(text)}
+                autoCapitalize="none"
+              />
+              <View style={{backgroundColor: "#fff", width: "40%", marginVertical: 20, borderRadius: 20}}>
+                <Button title="GO..." onPress={() => handleSubmit()}/>
+              </View>
+              {/* {visible?  */}
+              <FlatList
+                data={newList}
+                renderItem={({ item }) => (
+                  <TouchableOpacity
+                    onPress={() => showAlert(item)}  
+                  >
+                    <Text style={styles.textStyle}>{item}</Text>
+                  </TouchableOpacity>
+                
+                )}
+                
+                style={{width: 300, marginVertical: 20}}
+                //extraData={appIsReady}
+              />
+              {/* :
+              <></> */}
+                {/* } */}
+              <StatusBar style="auto" />
+            </View>
+            </SafeAreaView>
+          </Background>
+          </SafeAreaProvider>
 
     );
   }
-
- 
 }
+
+
 
 const styles = StyleSheet.create({
   container: {
