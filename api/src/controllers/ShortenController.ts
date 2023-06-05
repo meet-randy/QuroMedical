@@ -40,6 +40,18 @@ export class ShortenController {
     }
   }
 
+  public async recent(req: Request, res: Response) {
+    try {
+      
+      const recent = await this.shortenService.recent();
+    
+      res.json(recent)
+      
+    } catch (error) {
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  }
+
   public validateURL(input: string): boolean {
     try {
       new URL(input);

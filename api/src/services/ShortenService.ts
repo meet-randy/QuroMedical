@@ -13,4 +13,11 @@ export class ShortenService {
     const shortUrl = await this.shortenRepository.createShortUrl(longUrl);
     return shortUrl;
   }
+  public async recent(): Promise<string[]> {
+    // Perform URL shortening logic using the shortenRepository
+    // ...
+    const limit: number = 5;
+    const recent = await this.shortenRepository.getRecentUrls(limit);
+    return recent;
+  }
 }

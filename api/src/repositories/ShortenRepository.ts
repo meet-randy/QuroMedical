@@ -27,4 +27,24 @@ export class ShortenRepository {
     }
     return shortUrl;
   }
+
+  public async getRecentUrls(limit: number): Promise<string[]> {
+    const query = `
+      SELECT short_url
+      FROM urls
+      ORDER BY created_at DESC
+      LIMIT $1
+    `;
+
+    const values = [limit];
+
+    try {
+      const result = await this.pool.query(query, values);
+      const recentUrls = result.rows.map((row) => row.short_url);
+      return recentUrls;
+    } catch (error) {
+      console.error('Error fetching recent URLs:', error);
+      throw error;
+    }
+  }
 }
